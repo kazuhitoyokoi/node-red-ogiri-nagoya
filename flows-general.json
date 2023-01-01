@@ -1,0 +1,125 @@
+[
+    {
+        "id": "def91e95f8f4bbd1",
+        "type": "inject",
+        "z": "3b80fca3517873e4",
+        "name": "開始時に実行",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 60,
+        "wires": [
+            [
+                "bc6c96357779b642"
+            ]
+        ]
+    },
+    {
+        "id": "bc6c96357779b642",
+        "type": "http request",
+        "z": "3b80fca3517873e4",
+        "name": "APIからバス情報取得",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://kazuhitoyokoi.github.io/node-red-ogiri-nagoya/bus.json",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 400,
+        "y": 60,
+        "wires": [
+            [
+                "bc4d3322f75800be"
+            ]
+        ]
+    },
+    {
+        "id": "bc4d3322f75800be",
+        "type": "split",
+        "z": "3b80fca3517873e4",
+        "name": "配列を分割して個々のメッセージを作成",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "x": 280,
+        "y": 140,
+        "wires": [
+            [
+                "3e84ce39d5792507"
+            ]
+        ]
+    },
+    {
+        "id": "3e84ce39d5792507",
+        "type": "template",
+        "z": "3b80fca3517873e4",
+        "name": "worldmapノード向けにJSON作成",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "{\n    \"name\": \"{{{payload.stop_name}}}\",\n    \"lat\": \"{{{payload.stop_lat}}}\",\n    \"lon\": \"{{{payload.stop_lon}}}\"\n}",
+        "output": "json",
+        "x": 260,
+        "y": 220,
+        "wires": [
+            [
+                "f912e2134b786043"
+            ]
+        ]
+    },
+    {
+        "id": "f912e2134b786043",
+        "type": "worldmap",
+        "z": "3b80fca3517873e4",
+        "name": "地図上に位置情報を表示",
+        "lat": "",
+        "lon": "",
+        "zoom": "",
+        "layer": "OSMG",
+        "cluster": "",
+        "maxage": "",
+        "usermenu": "show",
+        "layers": "show",
+        "panit": "false",
+        "panlock": "false",
+        "zoomlock": "false",
+        "hiderightclick": "false",
+        "coords": "none",
+        "showgrid": "false",
+        "showruler": "false",
+        "allowFileDrop": "false",
+        "path": "/worldmap",
+        "overlist": "DR,CO,RA,DN,HM",
+        "maplist": "OSMG,OSMC,EsriC,EsriS,EsriT,EsriDG,UKOS",
+        "mapname": "",
+        "mapurl": "",
+        "mapopt": "",
+        "mapwms": false,
+        "x": 230,
+        "y": 300,
+        "wires": []
+    }
+]

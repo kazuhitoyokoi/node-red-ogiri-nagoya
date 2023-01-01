@@ -59,3 +59,5 @@ http://www.city.komaki.aichi.jp/admin/soshiki/toshiseisakubu/toshiseibi/2/openda
 3. wasmファイルと地図表示UIのHTMLファイルを、静的ファイルとしてGitHub Pages上に公開
 
 -> https://kazuhitoyokoi.github.io/node-red-ogiri-nagoya/bus.htm からアクセス可能
+
+※補足: [worldmapノードを用いて実装したケース](general.md)
