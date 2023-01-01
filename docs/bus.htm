@@ -1,0 +1,36 @@
+<html>
+<head>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"></script>
+</head>
+<body>
+  <div id="map" style="width: 100%; height: 100%;"></div>
+  <script src="./wasm_exec.js"></script>
+  <script>
+    (async () => {
+    const go = new Go();
+    const { instance } = await WebAssembly.instantiateStreaming(
+      fetch('bus.wasm'),
+      go.importObject
+    );
+    await go.run(instance);
+    })();
+    async function run() {
+    console.clear();
+    await go.run(inst);
+    inst = await WebAssembly.instantiate()
+    }
+  </script>
+    <script>
+      var map = L.map('map');
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+      map.setView([35.2999199,136.9402893], 14);
+      function debug(msgData) {
+        var msg = JSON.parse(msgData);
+        for (var i = 0; i < msg.length; i++) {
+          L.marker([msg[i].stop_lat, msg[i].stop_lon],{"color": "#910000"}).addTo(map);
+        }
+      }
+  </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+name: CI
+on:
+  push:
+    branches: [ "main" ]
+  schedule:
+    - cron: '0 15 * * *'
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          npm install
+          npm start
+          git config --global user.email "kazuhitoyokoi@nodered.jp"
+          git config --global user.name "Kazuhito Yokoi"
+          git add docs/*
+          git commit -m "Update JSON data" | true
+          git push

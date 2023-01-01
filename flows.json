@@ -1,0 +1,433 @@
+[
+    {
+        "id": "e16063ace729e4df",
+        "type": "tab",
+        "label": "バックエンドAPI",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "66e0c9fac19ba178",
+        "type": "tab",
+        "label": "フロントエンドWebAssembly",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "0442be348641014c",
+        "type": "group",
+        "z": "e16063ace729e4df",
+        "name": "GitHub Actionsの場合はプロセス終了",
+        "style": {
+            "stroke": "#ff0000",
+            "label": true,
+            "label-position": "n",
+            "color": "#ff0000"
+        },
+        "nodes": [
+            "1def63cf325ccb90",
+            "d42922525df25e0a",
+            "54247007ec916aae"
+        ],
+        "x": 54,
+        "y": 459,
+        "w": 552,
+        "h": 122
+    },
+    {
+        "id": "5f5bce6669ac3ffc",
+        "type": "group",
+        "z": "e16063ace729e4df",
+        "name": "JSONファイルとして保存",
+        "style": {
+            "label": true,
+            "stroke": "#ff0000",
+            "label-position": "n",
+            "color": "#ff0000"
+        },
+        "nodes": [
+            "58b7ccd766a0ac3f",
+            "ca8a566161ee93de"
+        ],
+        "x": 54,
+        "y": 339,
+        "w": 352,
+        "h": 82
+    },
+    {
+        "id": "1afbb3aacf38af2a",
+        "type": "group",
+        "z": "e16063ace729e4df",
+        "name": "zipファイルを展開",
+        "style": {
+            "stroke": "#ff0000",
+            "label": true,
+            "label-position": "n",
+            "color": "#ff0000"
+        },
+        "nodes": [
+            "5ae43cde14fde41b",
+            "17fde7be618b1dae",
+            "7b0c69d5bf908792",
+            "067c167b23402980"
+        ],
+        "x": 54,
+        "y": 159,
+        "w": 512,
+        "h": 142
+    },
+    {
+        "id": "d59822f927340804",
+        "type": "group",
+        "z": "e16063ace729e4df",
+        "name": "zipファイルをダウンロード",
+        "style": {
+            "stroke": "#ff0000",
+            "label": true,
+            "color": "#ff0000",
+            "label-position": "n"
+        },
+        "nodes": [
+            "e038e9e815e75e49",
+            "9d7237bba4ec4d7c"
+        ],
+        "x": 54,
+        "y": 39,
+        "w": 572,
+        "h": 82
+    },
+    {
+        "id": "e038e9e815e75e49",
+        "type": "inject",
+        "z": "e16063ace729e4df",
+        "g": "d59822f927340804",
+        "name": "起動時に実行",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "0.1",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 80,
+        "wires": [
+            [
+                "9d7237bba4ec4d7c"
+            ]
+        ]
+    },
+    {
+        "id": "5ae43cde14fde41b",
+        "type": "zip",
+        "z": "e16063ace729e4df",
+        "g": "1afbb3aacf38af2a",
+        "name": "zipを展開",
+        "mode": "decompress",
+        "filename": "",
+        "compressionlevel": 6,
+        "outasstring": true,
+        "x": 140,
+        "y": 200,
+        "wires": [
+            [
+                "17fde7be618b1dae"
+            ]
+        ]
+    },
+    {
+        "id": "9d7237bba4ec4d7c",
+        "type": "http request",
+        "z": "e16063ace729e4df",
+        "g": "d59822f927340804",
+        "name": "バス情報のzipファイルをダウンロード",
+        "method": "GET",
+        "ret": "bin",
+        "paytoqs": "ignore",
+        "url": "http://www.city.komaki.aichi.jp/material/files/group/88/gtfsdate.zip",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 450,
+        "y": 80,
+        "wires": [
+            [
+                "5ae43cde14fde41b"
+            ]
+        ]
+    },
+    {
+        "id": "17fde7be618b1dae",
+        "type": "split",
+        "z": "e16063ace729e4df",
+        "g": "1afbb3aacf38af2a",
+        "name": "ファイル毎にメッセージ分割",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "x": 360,
+        "y": 200,
+        "wires": [
+            [
+                "7b0c69d5bf908792"
+            ]
+        ]
+    },
+    {
+        "id": "7b0c69d5bf908792",
+        "type": "switch",
+        "z": "e16063ace729e4df",
+        "g": "1afbb3aacf38af2a",
+        "name": "stops.txtを選択",
+        "property": "payload.filename",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "stops.txt",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 160,
+        "y": 260,
+        "wires": [
+            [
+                "067c167b23402980"
+            ]
+        ]
+    },
+    {
+        "id": "58b7ccd766a0ac3f",
+        "type": "csv",
+        "z": "e16063ace729e4df",
+        "g": "5f5bce6669ac3ffc",
+        "name": "",
+        "sep": ",",
+        "hdrin": true,
+        "hdrout": "none",
+        "multi": "mult",
+        "ret": "\\n",
+        "temp": "",
+        "skip": "0",
+        "strings": true,
+        "include_empty_strings": "",
+        "include_null_values": "",
+        "x": 130,
+        "y": 380,
+        "wires": [
+            [
+                "ca8a566161ee93de"
+            ]
+        ]
+    },
+    {
+        "id": "ca8a566161ee93de",
+        "type": "file",
+        "z": "e16063ace729e4df",
+        "g": "5f5bce6669ac3ffc",
+        "name": "",
+        "filename": "docs/bus.json",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 300,
+        "y": 380,
+        "wires": [
+            [
+                "d42922525df25e0a"
+            ]
+        ]
+    },
+    {
+        "id": "1def63cf325ccb90",
+        "type": "function",
+        "z": "e16063ace729e4df",
+        "g": "0442be348641014c",
+        "name": "Node-REDのプロセスを終了",
+        "func": "process.exit();",
+        "outputs": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [
+            {
+                "var": "process",
+                "module": "process"
+            }
+        ],
+        "x": 460,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "d42922525df25e0a",
+        "type": "switch",
+        "z": "e16063ace729e4df",
+        "g": "0442be348641014c",
+        "name": "GitHub Actionsの処理?",
+        "property": "GITHUB_ACTIONS",
+        "propertyType": "env",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "true",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 190,
+        "y": 520,
+        "wires": [
+            [
+                "1def63cf325ccb90"
+            ],
+            [
+                "54247007ec916aae"
+            ]
+        ]
+    },
+    {
+        "id": "54247007ec916aae",
+        "type": "debug",
+        "z": "e16063ace729e4df",
+        "g": "0442be348641014c",
+        "name": "コンソールへ出力",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 440,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "067c167b23402980",
+        "type": "change",
+        "z": "e16063ace729e4df",
+        "g": "1afbb3aacf38af2a",
+        "name": "ファイルデータをpayloadに代入",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 410,
+        "y": 260,
+        "wires": [
+            [
+                "58b7ccd766a0ac3f"
+            ]
+        ]
+    },
+    {
+        "id": "8740d4c87aa226d5",
+        "type": "http request",
+        "z": "66e0c9fac19ba178",
+        "name": "APIからバス情報取得",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://kazuhitoyokoi.github.io/node-red-ogiri-nagoya/bus.json",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 220,
+        "y": 140,
+        "wires": [
+            [
+                "9ae96b81d3eb6fe2"
+            ]
+        ]
+    },
+    {
+        "id": "7d5ef118b8c6f3cb",
+        "type": "inject",
+        "z": "66e0c9fac19ba178",
+        "name": "開始時に実行",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 60,
+        "wires": [
+            [
+                "8740d4c87aa226d5"
+            ]
+        ]
+    },
+    {
+        "id": "9ae96b81d3eb6fe2",
+        "type": "debug",
+        "z": "66e0c9fac19ba178",
+        "name": "地図UIに位置情報を渡す",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 270,
+        "y": 220,
+        "wires": []
+    }
+]

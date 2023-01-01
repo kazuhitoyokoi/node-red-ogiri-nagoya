@@ -1,0 +1,8 @@
+{
+  "postAttachCommand": {
+    "server": "npm start"
+  },
+  "remoteEnv": {
+    "NODE_RED_ENABLE_TOURS": false
+  }
+}

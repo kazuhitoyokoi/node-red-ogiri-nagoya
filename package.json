@@ -1,0 +1,20 @@
+{
+    "name": "node-red-ogiri-nagoya",
+    "description": "A Node-RED Project",
+    "version": "0.0.1",
+    "scripts": {
+        "start": "node-red"
+    },
+    "dependencies": {
+        "node-red": "3.0.2",
+        "node-red-debugger": "1.1.1",
+        "nrlint": "1.1.0",
+        "node-red-contrib-zip": "1.1.0"
+    },
+    "node-red": {
+        "settings": {
+            "flowFile": "flows.json",
+            "credentialsFile": "flows_cred.json"
+        }
+    }
+}
